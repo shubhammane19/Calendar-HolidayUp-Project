@@ -15,6 +15,9 @@ const App = () => {
       .catch((error) => console.error('Error fetching holidays:', error));
   }, []);
 
+  <Calendar locale="en-US" />
+
+
   return (
     <div className="App">
       <header className="App-header">
