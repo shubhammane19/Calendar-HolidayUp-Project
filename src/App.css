@@ -1,130 +1,76 @@
-/* General container styling */
 .app-container {
-  text-align: center;
-  font-family: 'Arial', sans-serif;
   max-width: 500px;
-  margin: 50px auto;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
+  margin: auto;
+  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
-/* Title styling */
 h1 {
-  font-size: 26px;
   color: #333;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
-/* Calendar container */
-.calendar-container {
+.holiday-input {
   display: flex;
   justify-content: center;
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
-/* React Calendar Styling */
-.react-calendar {
-  width: 100%;
-  max-width: 400px;
-  border: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-}
-
-/* Holiday highlight */
-.holiday {
-  background-color: red !important;
-  color: white !important;
-  border-radius: 50%;
-  font-weight: bold;
-}
-
-/* Selected date display */
-.selected-date {
-  font-size: 18px;
-  font-weight: bold;
-  color: #555;
-  margin-top: 12px;
-}
-
-/* Holiday input section */
-.holiday-input-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-/* Input field */
-.holiday-input {
-  width: 80%;
-  padding: 10px;
+.holiday-input input {
+  padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  text-align: center;
+  border-radius: 4px;
+  margin-right: 5px;
 }
 
-/* Add Holiday Button */
-.add-holiday-btn {
-  padding: 12px 20px;
+.holiday-input button {
+  padding: 8px 12px;
   background-color: #007bff;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: 0.3s ease-in-out;
 }
 
-.add-holiday-btn:hover {
+.holiday-input button:hover {
   background-color: #0056b3;
 }
 
-/* Holiday List Section */
-.holiday-list-container {
-  margin-top: 25px;
-  width: 90%;
-  max-width: 450px;
-  border-top: 1px solid #ddd;
-  padding-top: 15px;
-}
-
-/* Holiday List Styling */
 .holiday-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
-  margin: 0;
-  max-height: 200px;
-  overflow-y: auto;
+  margin-top: 10px;
 }
 
 .holiday-item {
-  background-color: #f8f8f8;
-  padding: 12px;
-  margin: 6px 0;
-  border-radius: 5px;
-  border: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 5px;
   font-size: 16px;
-  text-align: center;
 }
 
-/* Responsive Design */
-@media (max-width: 500px) {
-  .app-container {
-    width: 90%;
-    padding: 15px;
-  }
+.holiday-item span {
+  flex-grow: 1;
+  text-align: left;
+}
 
-  .holiday-input {
-    width: 100%;
-  }
+.delete-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-  .holiday-list-container {
-    width: 100%;
-  }
+.delete-btn:hover {
+  background: darkred;
+}
+
+.holiday {
+  background-color: #ffcccb !important;
 }

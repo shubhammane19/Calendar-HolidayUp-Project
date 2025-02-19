@@ -18,7 +18,7 @@ const App: React.FC = () => {
     fetch("http://localhost:8080/holidays")
       .then((res) => res.json())
       .then((data) => {
-        setHolidays(data || []); // Ensure it's always an array
+        setHolidays(data || []);
         setLoading(false);
       })
       .catch((error) => {
@@ -54,6 +54,20 @@ const App: React.FC = () => {
     }
   };
 
+  const deleteHoliday = async (date: string) => {
+    try {
+      const response = await fetch(`http://localhost:8080/holidays/${date}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete holiday");
+
+      setHolidays(holidays.filter((holiday) => holiday.date !== date));
+    } catch (error) {
+      console.error("Error deleting holiday:", error);
+    }
+  };
+
   return (
     <div className="app-container">
       <h1>Holiday Calendar</h1>
@@ -62,7 +76,9 @@ const App: React.FC = () => {
       <Calendar
         onClickDay={(date) => setSelectedDate(date)}
         tileClassName={({ date }) =>
-          holidays?.some((holiday) => holiday.date === date.toISOString().split("T")[0]) ? "holiday" : ""
+          holidays?.some((holiday) => holiday.date === date.toISOString().split("T")[0])
+            ? "holiday"
+            : ""
         }
       />
 
@@ -80,16 +96,21 @@ const App: React.FC = () => {
         <button onClick={addHoliday}>Add Holiday</button>
       </div>
 
-      {/* Loading State */}
+      {/* Holiday List */}
       {loading ? (
         <p>Loading holidays...</p>
       ) : (
         <ul className="holiday-list">
-          {holidays?.map((holiday, index) => (
-            <li key={index} className="holiday-item">
-              {holiday.date}: {holiday.name}
-            </li>
-          )) || []}
+          {holidays.length > 0 ? (
+            holidays.map((holiday, index) => (
+              <li key={index} className="holiday-item">
+                <span>{holiday.date} - {holiday.name}</span>
+                <button className="delete-btn" onClick={() => deleteHoliday(holiday.date)}>❌</button>
+              </li>
+            ))
+          ) : (
+            <p>No holidays added yet.</p>
+          )}
         </ul>
       )}
     </div>
