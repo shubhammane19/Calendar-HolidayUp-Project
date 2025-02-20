@@ -1,40 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import API_URL from "../config.js";
 
 const Calendar: React.FC = () => {
+  const [holidayName, setHolidayName] = useState(""); // Moved inside component
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth());
   const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
-  const [holidays, setHolidays] = useState<{ [key: string]: string }>({}); // { date: holidayName }
+  const [holidays, setHolidays] = useState<{ [key: string]: string }>({});
 
-  // Days of the week
   const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  // Helper function to get the number of days in a month
   const getDaysInMonth = (month: number, year: number): number[] => {
-    const date = new Date(year, month + 1, 0);
-    const daysInMonth = date.getDate();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     return Array.from({ length: daysInMonth }, (_, i) => i + 1);
   };
 
-  // Get the days in the current month
-  const daysInMonth = getDaysInMonth(currentMonth, currentYear);
-
-  // Fetch holidays from backend API
   const fetchHolidays = async () => {
-    const res = await fetch('http://localhost:8080/holidays');
-    const data = await res.json();
-    const holidayMap: { [key: string]: string } = {};
-    data.forEach((holiday: { date: string, name: string }) => {
-      holidayMap[holiday.date] = holiday.name;
-    });
-    setHolidays(holidayMap);
+    try {
+      const res = await fetch(`${API_URL}/holidays`);
+      if (!res.ok) throw new Error("Failed to fetch holidays");
+      const data = await res.json();
+      const holidayMap: { [key: string]: string } = {};
+      data.forEach((holiday: { date: string; name: string }) => {
+        holidayMap[holiday.date] = holiday.name;
+      });
+      setHolidays(holidayMap);
+    } catch (error) {
+      console.error("❌ Error fetching holidays:", error);
+    }
   };
 
-  // Fetch holidays when the component mounts or the month changes
   useEffect(() => {
     fetchHolidays();
   }, [currentMonth, currentYear]);
 
-  // Helper function to handle the previous month
   const prevMonth = () => {
     if (currentMonth === 0) {
       setCurrentMonth(11);
@@ -44,7 +43,6 @@ const Calendar: React.FC = () => {
     }
   };
 
-  // Helper function to handle the next month
   const nextMonth = () => {
     if (currentMonth === 11) {
       setCurrentMonth(0);
@@ -54,26 +52,39 @@ const Calendar: React.FC = () => {
     }
   };
 
-  // Add holiday function
   const addHoliday = async (date: string) => {
-    const holidayName = prompt('Enter holiday name:');
-    if (holidayName) {
-      await fetch('http://localhost:8080/holidays', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date, name: holidayName }),
+    const name = prompt("Enter holiday name:");
+    if (!name || name.trim() === "") {
+      alert("Please enter a valid holiday name.");
+      return;
+    }
+
+    const newHoliday = { date, name: name.trim() };
+
+    try {
+      const response = await fetch(`${API_URL}/holidays`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newHoliday),
       });
-      fetchHolidays(); // Reload holidays after adding
+
+      if (!response.ok) throw new Error(`Failed to add holiday: ${response.statusText}`);
+
+      console.log("✅ Holiday added successfully");
+      fetchHolidays();
+    } catch (error) {
+      console.error("❌ Error adding holiday:", error);
     }
   };
 
-  // Delete holiday function
   const deleteHoliday = async (date: string) => {
-    if (window.confirm(`Are you sure you want to delete the holiday on ${date}?`)) {
-      await fetch(`http://localhost:8080/holidays/${date}`, {
-        method: 'DELETE',
-      });
-      fetchHolidays(); // Reload holidays after deletion
+    if (!window.confirm(`Delete holiday on ${date}?`)) return;
+
+    try {
+      await fetch(`${API_URL}/holidays/${date}`, { method: "DELETE" });
+      fetchHolidays();
+    } catch (error) {
+      console.error("❌ Error deleting holiday:", error);
     }
   };
 
@@ -81,7 +92,10 @@ const Calendar: React.FC = () => {
     <div className="calendar-container">
       <div className="calendar-header">
         <button onClick={prevMonth}>Prev</button>
-        <h2>{`${new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} ${currentYear}`}</h2>
+        <h2>
+          {new Date(currentYear, currentMonth).toLocaleString("default", { month: "long" })}{" "}
+          {currentYear}
+        </h2>
         <button onClick={nextMonth}>Next</button>
       </div>
       <div className="calendar-body">
@@ -93,13 +107,15 @@ const Calendar: React.FC = () => {
           ))}
         </div>
         <div className="days">
-          {daysInMonth.map((day) => {
-            const date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+          {getDaysInMonth(currentMonth, currentYear).map((day) => {
+            const date = `${currentYear}-${(currentMonth + 1).toString().padStart(2, "0")}-${day
+              .toString()
+              .padStart(2, "0")}`;
             return (
               <div
                 key={day}
-                className={`day ${holidays[date] ? 'holiday' : ''}`}
-                onClick={() => holidays[date] ? deleteHoliday(date) : addHoliday(date)}
+                className={`day ${holidays[date] ? "holiday" : ""}`}
+                onClick={() => (holidays[date] ? deleteHoliday(date) : addHoliday(date))}
               >
                 {day}
                 {holidays[date] && <span className="holiday-name">{holidays[date]}</span>}
@@ -113,5 +129,3 @@ const Calendar: React.FC = () => {
 };
 
 export default Calendar;
-export {};
-

@@ -1,76 +1,137 @@
+/* Main Container */
 .app-container {
   max-width: 500px;
   margin: auto;
   text-align: center;
   font-family: Arial, sans-serif;
+  padding: 20px;
+  background-color: #dedede; /* Slightly darker grey */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
 }
 
+/* Title */
+/* Title Styling */
 h1 {
   color: #333;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  font-size: 24px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+
+/* Selected Date */
+.selected-date {
+  font-size: 18px;
+  font-weight: bold;
+  color: #007bff;
+  margin-top: 10px;
+}
+
+/* Calendar Styling */
+.react-calendar {
+  width: 100%;
+  max-width: 400px;
+  background: #cfcfcf; /* Darker grey */
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+  margin: auto;
+}
+
+/* Calendar Tile Styles */
+.react-calendar__tile {
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+/* Calendar Tile Hover */
+.react-calendar__tile:hover {
+  background: #bfbfbf; /* Slightly darker grey on hover */
+}
+
+/* Active Date (Clicked) */
+.react-calendar__tile--active {
+  background: #007bff !important;
+  color: white;
+  font-weight: bold;
+}
+
+/* Holiday Dates */
+.holiday {
+  background-color: #cc0000 !important; /* Darker red */
+  color: white !important;
+  font-weight: bold;
+  border-radius: 6px;
+}
+
+/* Holiday Input & Button */
 .holiday-input {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  gap: 10px;
+  margin-top: 15px;
+  align-items: center;
 }
 
 .holiday-input input {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 5px;
+  padding: 10px;
+  border: 2px solid #bbb;
+  border-radius: 6px;
+  flex-grow: 1;
+  font-size: 16px;
 }
 
 .holiday-input button {
-  padding: 8px 12px;
-  background-color: #007bff;
+  padding: 10px 15px;
+  background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
 }
 
 .holiday-input button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
+/* Holiday List */
 .holiday-list {
   list-style: none;
   padding: 0;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 
 .holiday-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa;
-  padding: 10px;
+  background-color: #fff;
+  padding: 12px;
   border-radius: 8px;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   font-size: 16px;
+  border-left: 5px solid #007bff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.holiday-item span {
-  flex-grow: 1;
-  text-align: left;
-}
-
+/* Delete Button */
 .delete-btn {
-  background: red;
+  background: #dc3545;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 .delete-btn:hover {
-  background: darkred;
-}
-
-.holiday {
-  background-color: #ffcccb !important;
+  background: #c82333;
 }
